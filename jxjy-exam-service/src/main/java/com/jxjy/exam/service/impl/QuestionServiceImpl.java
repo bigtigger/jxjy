@@ -110,7 +110,7 @@ public class QuestionServiceImpl extends AbstractTokenService implements Questio
         try {
             return retryer.call(callable);
         }catch (Exception e){
-            log.warn("scrapy question by guava retry error,catId->{},pageNo->{}", catId, pageNo, e);
+            log.warn("scrapy question by guava retry error,catId->{},pageNo->{}", catId, pageNo);
             throw new BizException("scrapy question by guava retry error,catId->" + catId + ",pageNo->" + pageNo);
         }
     }
@@ -134,7 +134,7 @@ public class QuestionServiceImpl extends AbstractTokenService implements Questio
             }
             QuestionResultVo questionResultVo = JSON.parseObject(result, QuestionResultVo.class);
             if(Objects.isNull(questionResultVo) || Objects.isNull(questionResultVo.getResult()) || Objects.isNull(questionResultVo.getResult().getModel())){
-                log.warn("QuestionServiceImpl.scrapyQuestions JSON.parseObject to QuestionResultVo error,url->{},result->{}", url, result);
+                log.error("QuestionServiceImpl.scrapyQuestions JSON.parseObject to QuestionResultVo error,url->{},result->{}", url, result);
                 throw new IllegalParamException("retry to query questions,catId->" + catId + ",pageNo->" + pageNo);
             }
             if(CollectionUtils.isEmpty(questionResultVo.getResult().getList())){
@@ -153,10 +153,10 @@ public class QuestionServiceImpl extends AbstractTokenService implements Questio
                     });
             return questionResultVo.getResult().getModel().getTotalPage();
         }catch (IllegalParamException ie){
-            log.warn("retry to query questions,catId->" + catId + ",pageNo->" + pageNo, ie);
+            log.error("retry to scrapy questions error,catId->" + catId + ",pageNo->" + pageNo);
             throw new IllegalParamException("retry to query questions,catId->" + catId + ",pageNo->" + pageNo);
         } catch (Exception e){
-            log.error("scrapy Questions error,catId->{},pageNo->{}", catId, pageNo, e);
+            log.error("scrapy Questions error,catId->{},pageNo->{}", catId, pageNo);
             throw new BizException("scrapy Questions error,catId->" + catId + ",pageNo->" + pageNo);
         }
 

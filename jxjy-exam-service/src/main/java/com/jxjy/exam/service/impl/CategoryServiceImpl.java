@@ -116,7 +116,7 @@ public class CategoryServiceImpl extends AbstractTokenService implements Categor
         try {
             return retryer.call(callable);
         }catch (Exception e){
-            log.warn("scrapy category by guava retry error,catId->{}", catId, e);
+            log.warn("scrapy category by guava retry error,catId->{}", catId);
             throw new BizException("scrapy category by guava retry error,catId->" + catId);
         }
     }
@@ -150,7 +150,7 @@ public class CategoryServiceImpl extends AbstractTokenService implements Categor
                 }
             }
         }catch (Exception e){
-            log.error("scrapy category error,catId->{}", catId, e);
+            log.error("scrapy category error,catId->{}", catId);
             throw new RuntimeException(e);
         }
     }
