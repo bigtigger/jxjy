@@ -20,6 +20,7 @@ public class CategoryServiceTests {
 
     @Test
     public void testScrapyCategories() {
-        categoryService.scrapyCategories(71697L);
+//        categoryService.scrapyCategories(71697L);
+        categoryService.scrapyCategories(-2L);
     }
 }

@@ -11,4 +11,10 @@ public interface CategoryService {
      * @param catId 类目id
      */
     void scrapyCategories(Long catId);
+
+    /**
+     * 爬取指定类目及其子类目
+     * @param catId 类目id
+     */
+    void scrapyCategoryByRetry(Long catId);
 }
