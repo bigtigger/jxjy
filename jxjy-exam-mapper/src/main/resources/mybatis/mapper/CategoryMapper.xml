@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jxjy.exam.mapper.CategoryMapper">
+  <resultMap id="BaseResultMap" type="com.jxjy.exam.domain.dao.Category">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="cat_id" jdbcType="BIGINT" property="catId" />
+    <result column="parent_cat_id" jdbcType="BIGINT" property="parentCatId" />
+    <result column="cat_order" jdbcType="INTEGER" property="catOrder" />
+    <result column="cat_name" jdbcType="VARCHAR" property="catName" />
+    <result column="cat_enname" jdbcType="VARCHAR" property="catEnname" />
+    <result column="is_end" jdbcType="TINYINT" property="isEnd" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    <result column="is_delete" jdbcType="TINYINT" property="isDelete" />
+    <result column="dt" jdbcType="TIMESTAMP" property="dt" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, cat_id, parent_cat_id, cat_order, cat_name, cat_enname, is_end, update_date,
+    create_date, create_by, update_by, is_delete, dt
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from category
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from category
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.jxjy.exam.domain.dao.Category">
+    insert into category (id, cat_id, parent_cat_id, 
+      cat_order, cat_name, cat_enname, 
+      is_end, update_date,
+      create_date, create_by, update_by, 
+      is_delete, dt)
+    values (#{id,jdbcType=BIGINT}, #{catId,jdbcType=BIGINT}, #{parentCatId,jdbcType=BIGINT}, 
+      #{catOrder,jdbcType=INTEGER}, #{catName,jdbcType=VARCHAR}, #{catEnname,jdbcType=VARCHAR}, 
+      #{isEnd,jdbcType=TINYINT}, #{updateDate,jdbcType=TIMESTAMP},
+      #{createDate,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, #{updateBy,jdbcType=VARCHAR}, 
+      #{isDelete,jdbcType=TINYINT}, #{dt,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jxjy.exam.domain.dao.Category">
+    insert into category
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="catId != null">
+        cat_id,
+      </if>
+      <if test="parentCatId != null">
+        parent_cat_id,
+      </if>
+      <if test="catOrder != null">
+        cat_order,
+      </if>
+      <if test="catName != null">
+        cat_name,
+      </if>
+      <if test="catEnname != null">
+        cat_enname,
+      </if>
+      <if test="isEnd != null">
+        is_end,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="createBy != null">
+        create_by,
+      </if>
+      <if test="updateBy != null">
+        update_by,
+      </if>
+      <if test="isDelete != null">
+        is_delete,
+      </if>
+      <if test="dt != null">
+        dt,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="catId != null">
+        #{catId,jdbcType=BIGINT},
+      </if>
+      <if test="parentCatId != null">
+        #{parentCatId,jdbcType=BIGINT},
+      </if>
+      <if test="catOrder != null">
+        #{catOrder,jdbcType=INTEGER},
+      </if>
+      <if test="catName != null">
+        #{catName,jdbcType=VARCHAR},
+      </if>
+      <if test="catEnname != null">
+        #{catEnname,jdbcType=VARCHAR},
+      </if>
+      <if test="isEnd != null">
+        #{isEnd,jdbcType=TINYINT},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null">
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateBy != null">
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=TINYINT},
+      </if>
+      <if test="dt != null">
+        #{dt,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jxjy.exam.domain.dao.Category">
+    update category
+    <set>
+      <if test="catId != null">
+        cat_id = #{catId,jdbcType=BIGINT},
+      </if>
+      <if test="parentCatId != null">
+        parent_cat_id = #{parentCatId,jdbcType=BIGINT},
+      </if>
+      <if test="catOrder != null">
+        cat_order = #{catOrder,jdbcType=INTEGER},
+      </if>
+      <if test="catName != null">
+        cat_name = #{catName,jdbcType=VARCHAR},
+      </if>
+      <if test="catEnname != null">
+        cat_enname = #{catEnname,jdbcType=VARCHAR},
+      </if>
+      <if test="isEnd != null">
+        is_end = #{isEnd,jdbcType=TINYINT},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null">
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateBy != null">
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=TINYINT},
+      </if>
+      <if test="dt != null">
+        dt = #{dt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jxjy.exam.domain.dao.Category">
+    update category
+    set cat_id = #{catId,jdbcType=BIGINT},
+      parent_cat_id = #{parentCatId,jdbcType=BIGINT},
+      cat_order = #{catOrder,jdbcType=INTEGER},
+      cat_name = #{catName,jdbcType=VARCHAR},
+      cat_enname = #{catEnname,jdbcType=VARCHAR},
+      is_end = #{isEnd,jdbcType=TINYINT},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      update_by = #{updateBy,jdbcType=VARCHAR},
+      is_delete = #{isDelete,jdbcType=TINYINT},
+      dt = #{dt,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

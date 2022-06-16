@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jxjy.exam.mapper.QuestionMapper">
+  <resultMap id="BaseResultMap" type="com.jxjy.exam.domain.dao.Question">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="question_id" jdbcType="BIGINT" property="questionId" />
+    <result column="cat_id" jdbcType="BIGINT" property="catId" />
+    <result column="question_title" jdbcType="VARCHAR" property="questionTitle" />
+    <result column="key_title" jdbcType="VARCHAR" property="keyTitle" />
+    <result column="question_answer" jdbcType="VARCHAR" property="questionAnswer" />
+    <result column="question_options" jdbcType="VARCHAR" property="questionOptions" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    <result column="is_delete" jdbcType="TINYINT" property="isDelete" />
+    <result column="dt" jdbcType="TIMESTAMP" property="dt" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, question_id, cat_id, question_title, key_title, question_answer, question_options, 
+    update_date, create_date, create_by, update_by, is_delete, dt
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from question
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from question
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.jxjy.exam.domain.dao.Question">
+    insert into question (id, question_id, cat_id, 
+      question_title, key_title, question_answer, 
+      question_options, update_date, create_date, 
+      create_by, update_by, is_delete, 
+      dt)
+    values (#{id,jdbcType=BIGINT}, #{questionId,jdbcType=BIGINT}, #{catId,jdbcType=BIGINT}, 
+      #{questionTitle,jdbcType=VARCHAR}, #{keyTitle,jdbcType=VARCHAR}, #{questionAnswer,jdbcType=VARCHAR}, 
+      #{questionOptions,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{createBy,jdbcType=VARCHAR}, #{updateBy,jdbcType=VARCHAR}, #{isDelete,jdbcType=TINYINT}, 
+      #{dt,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jxjy.exam.domain.dao.Question">
+    insert into question
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="questionId != null">
+        question_id,
+      </if>
+      <if test="catId != null">
+        cat_id,
+      </if>
+      <if test="questionTitle != null">
+        question_title,
+      </if>
+      <if test="keyTitle != null">
+        key_title,
+      </if>
+      <if test="questionAnswer != null">
+        question_answer,
+      </if>
+      <if test="questionOptions != null">
+        question_options,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="createBy != null">
+        create_by,
+      </if>
+      <if test="updateBy != null">
+        update_by,
+      </if>
+      <if test="isDelete != null">
+        is_delete,
+      </if>
+      <if test="dt != null">
+        dt,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="questionId != null">
+        #{questionId,jdbcType=BIGINT},
+      </if>
+      <if test="catId != null">
+        #{catId,jdbcType=BIGINT},
+      </if>
+      <if test="questionTitle != null">
+        #{questionTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="keyTitle != null">
+        #{keyTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="questionAnswer != null">
+        #{questionAnswer,jdbcType=VARCHAR},
+      </if>
+      <if test="questionOptions != null">
+        #{questionOptions,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null">
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateBy != null">
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=TINYINT},
+      </if>
+      <if test="dt != null">
+        #{dt,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jxjy.exam.domain.dao.Question">
+    update question
+    <set>
+      <if test="questionId != null">
+        question_id = #{questionId,jdbcType=BIGINT},
+      </if>
+      <if test="catId != null">
+        cat_id = #{catId,jdbcType=BIGINT},
+      </if>
+      <if test="questionTitle != null">
+        question_title = #{questionTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="keyTitle != null">
+        key_title = #{keyTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="questionAnswer != null">
+        question_answer = #{questionAnswer,jdbcType=VARCHAR},
+      </if>
+      <if test="questionOptions != null">
+        question_options = #{questionOptions,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null">
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateBy != null">
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=TINYINT},
+      </if>
+      <if test="dt != null">
+        dt = #{dt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jxjy.exam.domain.dao.Question">
+    update question
+    set question_id = #{questionId,jdbcType=BIGINT},
+      cat_id = #{catId,jdbcType=BIGINT},
+      question_title = #{questionTitle,jdbcType=VARCHAR},
+      key_title = #{keyTitle,jdbcType=VARCHAR},
+      question_answer = #{questionAnswer,jdbcType=VARCHAR},
+      question_options = #{questionOptions,jdbcType=VARCHAR},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      update_by = #{updateBy,jdbcType=VARCHAR},
+      is_delete = #{isDelete,jdbcType=TINYINT},
+      dt = #{dt,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

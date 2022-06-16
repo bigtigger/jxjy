@@ -22,6 +22,11 @@
             <artifactId>jxjy-exam-service</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.jxjy.exam</groupId>
+            <artifactId>jxjy-exam-auth</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

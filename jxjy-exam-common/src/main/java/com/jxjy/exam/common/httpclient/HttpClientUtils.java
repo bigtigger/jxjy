@@ -10,6 +10,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.params.ClientPNames;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
@@ -41,6 +42,7 @@ public class HttpClientUtils {
                 .setConnectionRequestTimeout(timeOut)
                 .setConnectTimeout(timeOut)
                 .setSocketTimeout(timeOut)
+                .setRedirectsEnabled(false)
                 .build();
     }
 
@@ -100,7 +102,7 @@ public class HttpClientUtils {
                         .map(CloseableHttpResponse::getStatusLine)
                         .map(StatusLine::getStatusCode)
                         .orElse(0000000);
-                log.info("current get request url:{},headers:{},responseStatus:{}", url, headers, statusCode);
+                log.info("Redirects current get request url:{},responseStatus:{}", url, headers, statusCode);
             }
         } catch (Exception e) {
             throw new HttpException("httpPost meet error, the url:" + url, e);
@@ -140,7 +142,6 @@ public class HttpClientUtils {
             if(StringUtils.isNotEmpty(urlParams)){
                 url = url + question_mark + urlParams;
             }
-            log.info("HttpClientUtils.doGet请求URL->{}", url);
             HttpGet request = new HttpGet(url);
             request.setConfig(config(timeOut));
             if (null != headers && !headers.isEmpty()) {
@@ -158,7 +159,7 @@ public class HttpClientUtils {
                         .map(CloseableHttpResponse::getStatusLine)
                         .map(StatusLine::getStatusCode)
                         .orElse(0000000);
-                log.info("current get request url:{},headers:{},responseStatus:{}", url, headers, statusCode);
+                log.warn("Redirects current get request url->{}", url);
             }
         } catch (Exception e) {
             throw new HttpException("httpGet meet error, the url:" + url, e);

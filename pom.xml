@@ -5,6 +5,7 @@
 	<packaging>pom</packaging>
 	<modules>
 		<module>jxjy-exam-web</module>
+		<module>jxjy-exam-auth</module>
 		<module>jxjy-exam-service</module>
 		<module>jxjy-exam-domain</module>
 		<module>jxjy-exam-common</module>
@@ -32,6 +33,16 @@
 			<artifactId>lombok</artifactId>
 			<version>1.18.20</version>
 			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.retry</groupId>
+			<artifactId>spring-retry</artifactId>
+			<version>1.1.4.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>1.8.9</version>
 		</dependency>
 	</dependencies>
 
