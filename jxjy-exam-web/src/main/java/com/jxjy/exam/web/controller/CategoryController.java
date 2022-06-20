@@ -25,7 +25,9 @@ public class CategoryController {
     @GetMapping("/scapy")
     @ApiOperation("根据类目id爬取类目及其子类目信息")
     public Result scrapyCategories(@RequestParam("catId") Long catId) {
-        categoryService.scrapyCategories(catId);
+        new Thread(() -> {
+            categoryService.scrapyCategories(catId);
+        }).start();
         return Result.success(Boolean.TRUE);
     }
 }

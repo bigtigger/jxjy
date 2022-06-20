@@ -21,4 +21,11 @@ public interface QuestionService {
      * @return
      */
     Integer scrapyQuestionsRetry(Long catId, Integer pageNo);
+
+
+    /**
+     * 轮询类目主键id抓取考题信息
+     * @param beginId 类目主键id
+     */
+    void scrapByScanCategory(Long beginId, Long endId);
 }

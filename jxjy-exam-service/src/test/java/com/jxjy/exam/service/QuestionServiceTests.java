@@ -23,4 +23,11 @@ public class QuestionServiceTests {
     public void testScrapyQuestions() {
         questionService.scrapyQuestions(Lists.newArrayList(38870L));
     }
+
+
+
+    @Test
+    public void testscrapByScanCategory() {
+        questionService.scrapByScanCategory(19058L, 37712L);
+    }
 }

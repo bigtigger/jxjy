@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
@@ -71,7 +72,7 @@ public class CategoryServiceImpl extends AbstractTokenService implements Categor
                     log.error("CategoryServiceImpl.scrapyCategories parentCategoryVo is null,parentCategoryVo->{}", JSON.toJSONString(parentCategoryVo));
                     continue;
                 }
-                categoryMapper.insertSelective(category);
+                saveCategory(category);
                 if(CollectionUtils.isEmpty(parentCategoryVo.getChilds())){
                     continue;
                 }
@@ -81,17 +82,28 @@ public class CategoryServiceImpl extends AbstractTokenService implements Categor
                         log.error("CategoryServiceImpl.scrapyCategories childCategory is null,childCategory->{}", JSON.toJSONString(categoryVo));
                         continue;
                     }
-                    categoryMapper.insertSelective(childCategory);
+                    saveCategory(childCategory);
                     if(Objects.equals(categoryVo.getIs_leaf(), Boolean.FALSE)){
                         /**先睡一小会儿*/
-                        Thread.sleep(5000 + (int) (Math.random() * 5000));
+                        Thread.sleep(1000 + (int) (Math.random() * 1000));
                         scrapyCategories(categoryVo.getId());
                     }
                 }
             }
         }catch (Exception e){
             log.error("scrapy category error,catId->{}", catId, e);
-            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * 保持类目信息
+     * @param category
+     */
+    private void saveCategory(Category category) {
+        try{
+            categoryMapper.insertSelective(category);
+        }catch (Exception e){
+            log.warn("类目编码已存在---->{}", category.getCatId());
         }
     }
 
@@ -136,7 +148,7 @@ public class CategoryServiceImpl extends AbstractTokenService implements Categor
                     log.error("CategoryServiceImpl.scrapyCategories parentCategoryVo is null,parentCategoryVo->{}", JSON.toJSONString(parentCategoryVo));
                     continue;
                 }
-                categoryMapper.insertSelective(category);
+                saveCategory(category);
                 if(CollectionUtils.isEmpty(parentCategoryVo.getChilds())){
                     continue;
                 }
@@ -146,13 +158,17 @@ public class CategoryServiceImpl extends AbstractTokenService implements Categor
                         log.error("CategoryServiceImpl.scrapyCategories childCategory is null,childCategory->{}", JSON.toJSONString(categoryVo));
                         continue;
                     }
-                    categoryMapper.insertSelective(childCategory);
+                    saveCategory(childCategory);
                 }
             }
         }catch (Exception e){
             log.error("scrapy category error,catId->{}", catId);
-            throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public List<Category> scanById(Long id) {
+        return categoryMapper.selectByScan(id);
     }
 
 

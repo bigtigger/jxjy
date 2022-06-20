@@ -6,13 +6,16 @@ import com.github.rholder.retry.RetryerBuilder;
 import com.github.rholder.retry.StopStrategies;
 import com.github.rholder.retry.WaitStrategies;
 import com.jxjy.exam.common.CommonConst;
+import com.jxjy.exam.common.convert.JxjyMapUtils;
 import com.jxjy.exam.common.exception.BizException;
 import com.jxjy.exam.common.exception.IllegalParamException;
 import com.jxjy.exam.common.httpclient.HttpClientUtils;
+import com.jxjy.exam.domain.dao.Category;
 import com.jxjy.exam.domain.dao.Question;
 import com.jxjy.exam.domain.vo.question.QuestionResultVo;
 import com.jxjy.exam.mapper.QuestionMapper;
 import com.jxjy.exam.service.AbstractTokenService;
+import com.jxjy.exam.service.CategoryService;
 import com.jxjy.exam.service.QuestionService;
 import com.jxjy.exam.service.convert.QuestionConverter;
 import lombok.extern.slf4j.Slf4j;
@@ -45,6 +48,9 @@ public class QuestionServiceImpl extends AbstractTokenService implements Questio
     @Resource
     private QuestionMapper questionMapper;
 
+    @Autowired
+    private CategoryService categoryService;
+
     //定义guava重试机制
     private static Retryer<Integer> retryer = RetryerBuilder.<Integer>newBuilder()
             //设置异常重试源
@@ -73,7 +79,7 @@ public class QuestionServiceImpl extends AbstractTokenService implements Questio
                     try{
                         scrapyQuestions(catId);
                     }catch (Exception e){
-                        log.error("QuestionServiceImpl.scrapyQuestions by category error,catId->{}", catId, e);
+                        log.error("QuestionServiceImpl.scrapyQuestions by category error,catId->{}", catId);
                     }
                 });
     }
@@ -88,7 +94,7 @@ public class QuestionServiceImpl extends AbstractTokenService implements Questio
         while (totalPage > pageNo){
             pageNo ++;
             /**先睡一小会儿*/
-            Thread.sleep(5000 + (int) (Math.random() * 5000));
+            Thread.sleep(2000 + (int) (Math.random() * 1000));
             Integer num = scrapyCallable(catId, pageNo);
             if(CommonConst.ZERO.equals(num) || CommonConst.NEGATIVE_ONE.equals(num)){
                 log.warn("QuestionServiceImpl.scrapyQuestions cycle is end,catId->{},pageNo->{}", catId, pageNo);
@@ -110,7 +116,7 @@ public class QuestionServiceImpl extends AbstractTokenService implements Questio
         try {
             return retryer.call(callable);
         }catch (Exception e){
-            log.warn("scrapy question by guava retry error,catId->{},pageNo->{}", catId, pageNo);
+//            log.warn("scrapy question by guava retry error,catId->{},pageNo->{}", catId, pageNo);
             throw new BizException("scrapy question by guava retry error,catId->" + catId + ",pageNo->" + pageNo);
         }
     }
@@ -134,7 +140,7 @@ public class QuestionServiceImpl extends AbstractTokenService implements Questio
             }
             QuestionResultVo questionResultVo = JSON.parseObject(result, QuestionResultVo.class);
             if(Objects.isNull(questionResultVo) || Objects.isNull(questionResultVo.getResult()) || Objects.isNull(questionResultVo.getResult().getModel())){
-                log.error("QuestionServiceImpl.scrapyQuestions JSON.parseObject to QuestionResultVo error,url->{},result->{}", url, result);
+//                log.error("QuestionServiceImpl.scrapyQuestions JSON.parseObject to QuestionResultVo error,url->{},result->{}", url, result);
                 throw new IllegalParamException("retry to query questions,catId->" + catId + ",pageNo->" + pageNo);
             }
             if(CollectionUtils.isEmpty(questionResultVo.getResult().getList())){
@@ -148,17 +154,38 @@ public class QuestionServiceImpl extends AbstractTokenService implements Questio
                         try {
                             questionMapper.insertSelective(question);
                         }catch (Exception e){
-                            log.warn("inset to db error,question->{}", JSON.toJSONString(question));
+//                            log.warn("inset to db error,question->{}", JSON.toJSONString(question));
                         }
                     });
             return questionResultVo.getResult().getModel().getTotalPage();
         }catch (IllegalParamException ie){
-            log.error("retry to scrapy questions error,catId->" + catId + ",pageNo->" + pageNo);
+//            log.error("retry to scrapy questions error,catId->" + catId + ",pageNo->" + pageNo);
             throw new IllegalParamException("retry to query questions,catId->" + catId + ",pageNo->" + pageNo);
         } catch (Exception e){
-            log.error("scrapy Questions error,catId->{},pageNo->{}", catId, pageNo);
+//            log.error("scrapy Questions error,catId->{},pageNo->{}", catId, pageNo);
             throw new BizException("scrapy Questions error,catId->" + catId + ",pageNo->" + pageNo);
         }
 
+    }
+
+    @Override
+    public void scrapByScanCategory(Long beginId, Long endId) {
+        Long id = beginId;
+        while (id <= endId){
+            try{
+                log.info("scrapy scan category id->{}", id);
+                List<Category> categories = categoryService.scanById(id);
+                List<Long> catIds = JxjyMapUtils.toOtherList(categories, Category::getCatId);
+                if(CollectionUtils.isEmpty(catIds)){
+                    log.warn("scrapy scan category is empty,end to scan,id->{}", id);
+                    break;
+                }
+                scrapyQuestions(catIds);
+                categories.sort((x, y) -> Long.compare(y.getId(), x.getId()));
+                id = categories.get(0).getId();
+            }catch (Exception e){
+                log.error("scrapy scan category error,id->{}", id);
+            }
+        }
     }
 }

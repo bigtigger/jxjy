@@ -1,5 +1,9 @@
 package com.jxjy.exam.service;
 
+import com.jxjy.exam.domain.dao.Category;
+
+import java.util.List;
+
 /**
  * @author yyc
  * @version 1.0
@@ -17,4 +21,11 @@ public interface CategoryService {
      * @param catId 类目id
      */
     void scrapyCategoryByRetry(Long catId);
+
+    /**
+     * 轮询所有末级类目
+     * @param id
+     * @return
+     */
+    List<Category> scanById(Long id);
 }

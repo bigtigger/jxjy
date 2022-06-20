@@ -185,4 +185,15 @@
       dt = #{dt,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+
+
+  <select id="selectByScan" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from category
+    where id > #{id,jdbcType=BIGINT} and is_end = 1 and is_delete = 0
+    order by id asc
+    limit 1, 100
+  </select>
 </mapper>

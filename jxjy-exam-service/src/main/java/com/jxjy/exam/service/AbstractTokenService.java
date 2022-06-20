@@ -17,9 +17,17 @@ public abstract class AbstractTokenService {
     /**
      * token
      */
-    private static final String token = "ASP.NET_SessionId=wastpgoqli4prihotigxu2jo; JHZLUID=d07787816a9c10ca1c0f0eec3c884819";
+    private static final String token = "ASP.NET_SessionId=rj1w3dlktingfme52a1t2xop; JHZLUID=5e72ecf9079048017d8436caf15cbf5b";
 
+    /**
+     * User-Agent
+     */
     private static List<String> uas = Lists.newArrayList();
+
+    /**
+     * cookies
+     */
+    private static List<String> cookies = Lists.newArrayList();
 
     static {
         uas.add("User-Agent,Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0;");
@@ -42,6 +50,30 @@ public abstract class AbstractTokenService {
         uas.add("User-Agent, Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; Avant Browser)");
         uas.add("User-Agent, Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)");
         uas.add("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36");
+
+        /**cookies*/
+        cookies.add("ASP.NET_SessionId=rj1w3dlktingfme52a1t2xop; JHZLUID=486d4dcd6712d28940d3e06ce38e48c1");
+        cookies.add("ASP.NET_SessionId=rj1w3dlktingfme52a1t2xop; JHZLUID=2b52b00b1425537ab887ba65b0e36b3f");
+        cookies.add("ASP.NET_SessionId=rj1w3dlktingfme52a1t2xop; JHZLUID=e49ab308d4585ff382f6be43e9f84f0e");
+        cookies.add("ASP.NET_SessionId=rj1w3dlktingfme52a1t2xop; JHZLUID=bac8396d3049491bdbb58695e909fdf8");
+        cookies.add("ASP.NET_SessionId=rj1w3dlktingfme52a1t2xop; JHZLUID=40ca06a4f8078b01751ab1b570faaf1b");
+        cookies.add("ASP.NET_SessionId=rj1w3dlktingfme52a1t2xop; JHZLUID=a27389eaeb7ed2175c9f402380e6eccd");
+        cookies.add("ASP.NET_SessionId=rj1w3dlktingfme52a1t2xop; JHZLUID=cc7a5ec4882b08a0365c7c09da44f3f9");
+        cookies.add("ASP.NET_SessionId=rj1w3dlktingfme52a1t2xop; JHZLUID=12afe4d6d99585db235bb076a1a607a2");
+        cookies.add("ASP.NET_SessionId=rj1w3dlktingfme52a1t2xop; JHZLUID=1b866ca3e03036c581dea6ec92fad749");
+        cookies.add("ASP.NET_SessionId=rj1w3dlktingfme52a1t2xop; JHZLUID=74bcd107c5c00dac1e590bc20d00ba77");
+        cookies.add("ASP.NET_SessionId=rj1w3dlktingfme52a1t2xop; JHZLUID=f85e8fc4da17a6007bf004d1c9af46f8");
+        cookies.add("ASP.NET_SessionId=rj1w3dlktingfme52a1t2xop; JHZLUID=a8b584d8c6b0fc746d0ddfaa84ad1408");
+        cookies.add("ASP.NET_SessionId=rj1w3dlktingfme52a1t2xop; JHZLUID=66ae7c920ed95e96f45e963ac073b558");
+        cookies.add("ASP.NET_SessionId=rj1w3dlktingfme52a1t2xop; JHZLUID=47d5ebc16968343ffdd9eddf1535df18");
+        cookies.add("ASP.NET_SessionId=rj1w3dlktingfme52a1t2xop; JHZLUID=34301845cb38e6763576ff9d338309cb");
+        cookies.add("ASP.NET_SessionId=rj1w3dlktingfme52a1t2xop; JHZLUID=4147a94ba33bdb8cf8058004b0ea900e");
+        cookies.add("ASP.NET_SessionId=rj1w3dlktingfme52a1t2xop; JHZLUID=15ad7c543f20ee876dfb71b8deacafb4");
+        cookies.add("ASP.NET_SessionId=rj1w3dlktingfme52a1t2xop; JHZLUID=10f92dc910b729dcb6e1148bea8421ac");
+        cookies.add("ASP.NET_SessionId=rj1w3dlktingfme52a1t2xop; JHZLUID=6f5023d56f5c4ec70c035b139abe519b");
+        cookies.add("ASP.NET_SessionId=rj1w3dlktingfme52a1t2xop; JHZLUID=24df9959507f80a088900639bc341301");
+
+
     }
     /**
      * 封装token
@@ -62,18 +94,18 @@ public abstract class AbstractTokenService {
         tokenMap.put("Sec-Fetch-Dest", "empty");
         tokenMap.put("Sec-Fetch-Mode", "cors");
         tokenMap.put("Sec-Fetch-Site", "same-origin");
-        tokenMap.put(HTTP.USER_AGENT, getUserAgent());
+        tokenMap.put(HTTP.USER_AGENT, getKeyByRandom(uas, 20));
         tokenMap.put("X-Requested-With", "XMLHttpRequest");
         return tokenMap;
     }
 
     /**
-     * 随机获取USER_AGENT
+     * 随机获取关键子
      * @return
      */
-    private String getUserAgent(){
+    private String getKeyByRandom(List<String> keys, Integer num){
         Random random = new Random();
-        int randomNum = random.nextInt(20);
-        return uas.get(randomNum);
+        int randomNum = random.nextInt(num);
+        return keys.get(randomNum);
     }
 }

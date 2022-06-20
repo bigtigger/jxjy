@@ -2,6 +2,8 @@ package com.jxjy.exam.mapper;
 
 import com.jxjy.exam.domain.dao.Category;
 
+import java.util.List;
+
 public interface CategoryMapper {
     /**
      * 根据主键id删除类目
@@ -44,4 +46,11 @@ public interface CategoryMapper {
      * @return
      */
     int updateByPrimaryKey(Category record);
+
+    /**
+     * 轮询所有末级类目
+     * @param id 主键id
+     * @return
+     */
+    List<Category> selectByScan(Long id);
 }

@@ -28,4 +28,13 @@ public class QuestionController {
     public Result scrapy(@RequestParam("catId") Long catId, @RequestParam("page") Integer pageNo) {
         return Result.success(questionService.scrapyQuestionsRetry(catId, pageNo));
     }
+
+    @GetMapping("/scan")
+    @ApiOperation("根据类目主键id分段爬取考题信息")
+    public Result scan(@RequestParam("beginId") Long beginId, @RequestParam("endId") Long endId) {
+        new Thread(() -> {
+            questionService.scrapByScanCategory(beginId, endId);
+        }).start();
+        return Result.success(true);
+    }
 }
